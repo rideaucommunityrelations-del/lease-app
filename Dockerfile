@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:22-slim
 
 # LibreOffice provides the `soffice` binary that lib/pdfConvert.js shells out
 # to for converting generated .docx leases to PDF. fonts-liberation supplies
