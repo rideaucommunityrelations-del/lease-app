@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: lease-app
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+    # NOTE: free tier has no persistent disk. db/leases.db and everything in
+    # output/ live on the container's ephemeral filesystem and are wiped on
+    # every restart or redeploy. Fine for now; revisit with a paid plan +
+    # persistent disk (or an external DB) if lease history needs to survive.

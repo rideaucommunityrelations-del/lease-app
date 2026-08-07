@@ -1,0 +1,15 @@
+node_modules
+.git
+.gitignore
+
+db/*.db
+db/*.db-shm
+db/*.db-wal
+
+output/*.docx
+output/*.pdf
+
+*.log
+.server.pid
+.DS_Store
+Start Lease App.command
