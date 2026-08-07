@@ -1,0 +1,150 @@
+<% pageTitle = 'Generate Lease' %>
+<%- include('partials/header') %>
+
+<% if (error) { %>
+  <div class="banner error"><strong>Error:</strong> <%= error %></div>
+<% } %>
+
+<% if (success) { %>
+  <div class="banner success">
+    <strong><%= success.resident_name %></strong>'s <%= success.lease_type %> lease was generated.
+    <div class="download-links">
+      <a href="/download/<%= success.pdf_filename %>" target="_blank">Download PDF</a>
+      <a href="/download/<%= success.docx_filename %>" target="_blank">Download DOCX</a>
+    </div>
+  </div>
+<% } %>
+
+<div class="card">
+  <h2>New Lease Agreement</h2>
+  <form action="/generate" method="POST" id="lease-form">
+    <div class="field">
+      <label for="lease_type">Lease Type</label>
+      <select name="lease_type" id="lease_type" required>
+        <option value="guest">Guest</option>
+        <option value="respite">Respite</option>
+        <option value="permanent">Permanent</option>
+      </select>
+    </div>
+
+    <fieldset>
+      <legend>Resident</legend>
+      <div class="field-row">
+        <div class="field">
+          <label for="resident_name">Resident Name</label>
+          <input type="text" name="resident_name" id="resident_name" required>
+        </div>
+        <div class="field">
+          <label for="suite_number">Suite Number</label>
+          <input type="text" name="suite_number" id="suite_number" required>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="start_date">Start Date</label>
+          <input type="date" name="start_date" id="start_date" required>
+        </div>
+        <div class="field" data-types="guest,respite">
+          <label for="end_date">End Date</label>
+          <input type="date" name="end_date" id="end_date" data-required="true">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="current_date">Agreement Date</label>
+          <input type="date" name="current_date" id="current_date" value="<%= today %>" required>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset data-types="guest,respite">
+      <legend>Guest / Respite Rates</legend>
+      <div class="field-row">
+        <div class="field" data-types="guest,respite">
+          <label for="daily_rate">Daily Rate ($)</label>
+          <input type="number" step="0.01" min="0" name="daily_rate" id="daily_rate" data-required="true">
+        </div>
+        <div class="field" data-types="guest,respite">
+          <label for="deposit">Deposit ($)</label>
+          <input type="number" step="0.01" min="0" name="deposit" id="deposit" data-required="true">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field" data-types="guest,respite">
+          <label for="parking_space">Parking Space #</label>
+          <input type="text" name="parking_space" id="parking_space">
+        </div>
+        <div class="field" data-types="guest,respite">
+          <label for="parking_fee">Parking Fee ($)</label>
+          <input type="number" step="0.01" min="0" name="parking_fee" id="parking_fee">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field" data-types="guest,respite">
+          <label for="scooter_space">Scooter Space #</label>
+          <input type="text" name="scooter_space" id="scooter_space">
+        </div>
+        <div class="field" data-types="guest,respite">
+          <label for="scooter_fee">Scooter Fee ($)</label>
+          <input type="number" step="0.01" min="0" name="scooter_fee" id="scooter_fee">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset data-types="guest,respite">
+      <legend>Second Person (optional)</legend>
+      <div class="field-row">
+        <div class="field" data-types="guest,respite">
+          <label for="second_person_name">Name</label>
+          <input type="text" name="second_person_name" id="second_person_name">
+        </div>
+        <div class="field" data-types="guest,respite">
+          <label for="second_person_rate">Rate ($/day)</label>
+          <input type="number" step="0.01" min="0" name="second_person_rate" id="second_person_rate">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field" data-types="guest,respite">
+          <label for="second_person_start">Start Date</label>
+          <input type="date" name="second_person_start" id="second_person_start">
+        </div>
+        <div class="field" data-types="guest,respite">
+          <label for="second_person_end">End Date</label>
+          <input type="date" name="second_person_end" id="second_person_end">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset data-types="permanent">
+      <legend>Permanent (Month-to-Month) Details</legend>
+      <div class="field-row">
+        <div class="field" data-types="permanent">
+          <label for="monthly_rate">Monthly Rate ($)</label>
+          <input type="number" step="0.01" min="0" name="monthly_rate" id="monthly_rate" data-required="true">
+        </div>
+        <div class="field" data-types="permanent">
+          <label>Deposit ($)</label>
+          <input type="text" value="Auto-calculated as half the monthly rate" disabled>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field" data-types="permanent">
+          <label for="resident2_name">Resident 2 Name (optional)</label>
+          <input type="text" name="resident2_name" id="resident2_name">
+        </div>
+        <div class="field" data-types="permanent">
+          <label for="resident2_amount">Resident 2 Amount ($)</label>
+          <input type="number" step="0.01" min="0" name="resident2_amount" id="resident2_amount">
+        </div>
+      </div>
+    </fieldset>
+
+    <button type="submit">Generate Lease</button>
+  </form>
+</div>
+
+<script src="/public/js/form.js"></script>
+
+<%- include('partials/footer') %>

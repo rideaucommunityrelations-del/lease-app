@@ -1,0 +1,20 @@
+node_modules/
+
+# SQLite database - contains real lease/resident data, never commit
+db/*.db
+db/*.db-shm
+db/*.db-wal
+
+# Generated lease documents - contain real resident PII, never commit
+output/*.docx
+output/*.pdf
+!output/.gitkeep
+
+# Local runtime artifacts
+server.log
+*.log
+.server.pid
+.DS_Store
+
+# Environment / secrets
+.env

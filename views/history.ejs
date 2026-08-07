@@ -1,0 +1,46 @@
+<% pageTitle = 'Lease History' %>
+<%- include('partials/header') %>
+
+<div class="card">
+  <h2>Generated Leases</h2>
+
+  <% if (leases.length === 0) { %>
+    <div class="empty-state">No leases generated yet.</div>
+  <% } else { %>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Resident</th>
+            <th>Suite</th>
+            <th>Dates</th>
+            <th>Amount</th>
+            <th>Created</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% leases.forEach(lease => { %>
+            <tr>
+              <td><span class="badge <%= lease.lease_type %>"><%= lease.lease_type %></span></td>
+              <td><%= lease.resident_name %></td>
+              <td><%= lease.suite_number %></td>
+              <td>
+                <%= lease.start_date %><% if (lease.end_date) { %> &ndash; <%= lease.end_date %><% } else { %> (month-to-month)<% } %>
+              </td>
+              <td><%= lease.total_amount !== null ? '$' + Number(lease.total_amount).toFixed(2) : '' %></td>
+              <td><%= lease.created_at %></td>
+              <td class="download-links">
+                <a href="/download/<%= lease.pdf_filename %>" target="_blank">PDF</a>
+                <a href="/download/<%= lease.docx_filename %>" target="_blank">DOCX</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>
